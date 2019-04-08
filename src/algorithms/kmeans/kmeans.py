@@ -3,6 +3,15 @@ import numpy as np
 from sklearn.utils import shuffle
 
 
+# print dataframe
+def print_dataframe(df, print_title=True):
+    print('Number of data:', len(df))
+    if print_title:
+        print(' '.join([column for column in df]))
+
+    for index, row in df.iterrows():
+        print(index, ':', ' '.join([str(row[column]) for column in df]))
+
 # load file into dataframe and
 # clean invalid data
 def load_file(file_name):
