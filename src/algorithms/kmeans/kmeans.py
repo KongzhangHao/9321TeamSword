@@ -133,6 +133,26 @@ def pre_process_data_optimised(df):
              'a12_1', 'a12_2', 'a12_3', 'a13_3', 'a13_6', 'a13_7', 'a14']]
 
     return df
+# use k-means to cluster data
+def cluster_by_kmeans(df):
+    # get dataframe without target attribute
+    df_without_label = df.drop(['a14'], axis=1)
+
+    # fit a k-means estimator
+    estimator = KMeans(n_clusters=2)
+    estimator.fit(df_without_label)
+
+    # labels are given by labels_ attribute
+    labels = estimator.labels_
+    facts = np.array(df['a14'])
+
+    count_error = 0
+    for index in range(len(labels)):
+        if facts[index] != labels[index]:
+            count_error += 1
+
+    print('Accuracy: %.2f' % (max(count_error, len(facts) - count_error)/len(facts)*100))
+    return (max(count_error, len(facts) - count_error)/len(facts)*100)
 
 if __name__ == '__main__':
     df = load_file('/Users/hao/PycharmProject/COMP9321-project/data/heart_disease.csv')
