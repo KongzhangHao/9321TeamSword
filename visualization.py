@@ -37,6 +37,28 @@ def reverse2dArray(array):
     return new
 
 
+def filterArray(array,index,value):
+    new = []
+    for i in range(0,len(array)):
+        if array[i][index] == value:
+            l=[]
+            for j in range(0,len(array[0])):
+                l.append(array[i][j])
+            new.append(l)
+    return new
+
+def filterRange(array,index,min,max):
+    new = []
+    for i in range(0, len(array)):
+        if array[i][index] >= min and array[i][index] < max:
+            l = []
+            for j in range(0, len(array[0])):
+                l.append(array[i][j])
+            new.append(l)
+    return new
+
+
+
 def plot_3():
     valuesMale1 = get_numValuesByAge(filterArray(MaleOnlyArray,2,1.0))
     valuesMale2 = get_numValuesByAge(filterArray(MaleOnlyArray,2,2.0))
