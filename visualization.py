@@ -58,6 +58,19 @@ def filterRange(array,index,min,max):
     return new
 
 
+def get_numValuesByAge(array):
+    values = []
+    values.append(len(filterRange(array,0,0,45)))
+    values.append(len(filterRange(array,0,45,55)))
+    values.append(len(filterRange(array,0,55,65)))
+    values.append(len(filterRange(array,0,65,500)))
+    return np.array(values)
+
+def toPoints(array,index1,index2):
+    reversedArray = reverse2dArray(array)
+    new = (reversedArray[index1],reversedArray[index2])
+    return new
+
 
 def plot_3():
     valuesMale1 = get_numValuesByAge(filterArray(MaleOnlyArray,2,1.0))
