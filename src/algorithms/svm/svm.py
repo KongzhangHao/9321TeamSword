@@ -1,11 +1,18 @@
 import csv
+from src.algorithms.svm.helper import *
+import numpy as np
+from copy import deepcopy
+from matplotlib import pyplot as plt
+import pandas as pd
+
+headers = []
+
 
 def is_clean_data(row):
     if "?" in row:
         return False
     return True
 
-headers = []
 
 # [0, 2, 3, 7, 9, 11, 12, 15, 17, 18, 25, 28, 32, 35, 36]
 def preprocess(row):
@@ -167,6 +174,32 @@ def preprocess(row):
     nums.append(len(result))
     # print(nums)
     return result
+
+
+def read_csv(path):
+    rows = []
+    with open(path, newline='') as csvfile:
+        reader = csv.reader(csvfile, delimiter=',')
+        for row in reader:
+            if is_clean_data(row):
+                rows.append(preprocess(row))
+            else:
+                continue
+    return rows
+
+
+def print_rows(rows):
+    for row in rows:
+        print("\t\t".join(map(lambda x: str(x), row)))
+
+
+def print_row_medium(rows, num):
+    values = []
+    for row in rows:
+        values.append(row[num])
+    print(sorted(values)[int(len(values) / 2)])
+
+
 def build_svm(rows):
     x_train = []
     y_train = []
@@ -183,6 +216,41 @@ def build_svm(rows):
     # weights = clf.coef_[0]
 
     return clf
+
+
+def test_accuracy(clf, path):
+    rows = []
+    succss = 0
+    modified_success = [0 for i in range(35)]
+    modified_total = [0 for i in range(35)]
+    total = 0
+
+    with open(path, newline='') as csvfile:
+        reader = csv.reader(csvfile, delimiter=',')
+        for row in reader:
+            if is_clean_data(row):
+                row = preprocess(row)
+                total += 1
+                if clf.predict([row[:-1]])[0] == row[-1]:
+                    succss += 1
+                #
+                # for i in range(35):
+                #     if row[i] == 0:
+                #         continue
+                #     modified_total[i] += 1
+                #     row_copy = deepcopy(row)
+                #     row_copy[i] = 0
+                #     if clf.predict([row_copy[:-1]])[0] == row[-1]:
+                #         modified_success[i] += 1
+
+    # for i in range(35):
+    #     modified_success[i] = modified_success[i] / modified_total[i]
+    #
+    # print(succss / total * 100)
+    # print(modified_success)
+    return succss / total * 100
+
+
 def f_importances(coef, names):
     imp = coef
     imp,names = zip(*sorted(zip(imp,names)))
@@ -191,18 +259,25 @@ def f_importances(coef, names):
     plt.show()
 
 
-def read_csv(path):
-    rows = []
-    with open(path, newline='') as csvfile:
-        reader = csv.reader(csvfile, delimiter=',')
-        for row in reader:
-            if is_clean_data(row):
-                rows.append(preprocess(row))
-            else:
-                continue
-    return rows
-
 def svm_strategy(data_path):
     rows = read_csv(data_path)
+    # print_row_medium(rows, 9)
+    # print_rows(rows)
+
+    clf = build_svm(rows)
+
+    print(test_accuracy(clf, data_path), "%")
+    weights = clf.coef_[0]
+    weights = list(map(lambda x:abs(x), weights))
+    print(weights)
+    result = {}
+    for i in range(35):
+        result[i] = weights[i]
+
+    for key in sorted(result.keys(), key=lambda x: result[x], reverse=True):
+        print(headers[key], "\t\t", result[key])
+
+    return
+
 
 svm_strategy('/Users/hao/PycharmProject/COMP9321-project/data/heart_disease.csv')
