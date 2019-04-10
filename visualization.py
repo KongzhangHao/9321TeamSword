@@ -98,7 +98,6 @@ def plot_3():
 
     plt.xticks(ind + width / 2, age_ranges)
     plt.legend(bbox_to_anchor=(-0.1, 0.8))
-    plt.title('Relationship Between Chest Pain Type and ages in different sex')
 
 
     plt.savefig('static/figures/' + '3' + '.png', fotmat='png', bbox_inches='tight')
