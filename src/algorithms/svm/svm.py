@@ -266,10 +266,8 @@ def svm_strategy(data_path):
 
     clf = build_svm(rows)
 
-    print(test_accuracy(clf, data_path), "%")
     weights = clf.coef_[0]
     weights = list(map(lambda x:abs(x), weights))
-    print(weights)
     result = {}
     for i in range(35):
         result[i] = weights[i]
