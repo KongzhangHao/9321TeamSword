@@ -145,9 +145,42 @@ def load_file(file_name):
 
 if __name__ == '__main__':
 
-    file_name = './kongzhang_preprocessed.csv'
-    #df = pd.read_csv(file_name)
+    # file_name = './kongzhang_preprocessed.csv'
+    # df = pd.read_csv(file_name)
     df = load_file('/Users/hao/PycharmProject/COMP9321-project/data/heart_disease.csv')
     df = pre_process_data_optimised(df)
-    df = pre_process_data(df)
-    train = pd.DataFrame(df.iloc[:190])
+    # df = pre_process_data(df)
+    # train = pd.DataFrame(df.iloc[:190])
+
+    attribute_influence = {}
+
+    for column in df:
+        if column == 'a14':
+            continue
+        train = df.drop([column], axis=1)
+        test = df.drop([column], axis=1)
+        total = 0
+        match = 0
+        for row in test.index:
+            total += 1
+            if predict(test.loc[row][:-1], test, 3) == df.loc[row][-1]:
+                match += 1
+        result = str(match / total * 100) + "%"
+        attribute_influence[column] = result
+
+    for attribute in sorted(attribute_influence, key=lambda x : attribute_influence[x]):
+        print("%s,%s" % (attribute, attribute_influence[attribute]))
+
+
+    train = pd.DataFrame(df.iloc[:])
+    test = pd.DataFrame(df.iloc[:])
+    result = []
+    for k in range(3, 4):
+        total = 0
+        match = 0
+        for row in test.index:
+            total += 1
+            if predict(test.loc[row][:-1], test, k) == df.loc[row][-1]:
+                match += 1
+        result.append(match / total)
+    print(result)
