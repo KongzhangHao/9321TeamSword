@@ -2,6 +2,17 @@ import pandas as pd
 import numpy as np
 from sklearn.utils import shuffle
 
+
+def predict(test_data, training_data, k):
+    training_data['distance'] = 0
+    print("hello")
+    temp = (training_data.iloc[:, :-2] - test_data) ** 2
+    training_data['distance'] = temp.sum(1) ** 1 / 2
+    knn = training_data.sort_values(by='distance')[:k]
+    print("aaa")
+    training_data.drop('distance', axis=1, inplace=True)
+    return knn.iloc[:, -2].value_counts().index[0]
+
 def pre_process_data(df):
     # normalize continuous value of attributes
     for column in df:
