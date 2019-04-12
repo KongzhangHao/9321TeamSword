@@ -1,16 +1,9 @@
+# This is written by Shaowen Tang for COMP9321 Assignment3
 import pandas as pd
 import numpy as np
 from sklearn.utils import shuffle
+from sklearn.cluster import KMeans
 
-
-# print dataframe
-def print_dataframe(df, print_title=True):
-    print('Number of data:', len(df))
-    if print_title:
-        print(' '.join([column for column in df]))
-
-    for index, row in df.iterrows():
-        print(index, ':', ' '.join([str(row[column]) for column in df]))
 
 
 
@@ -35,6 +28,7 @@ def load_file(file_name):
 
     df = shuffle(df)
     return df
+
 
 # pre-process data
 def pre_process_data(df):
@@ -82,6 +76,8 @@ def pre_process_data(df):
              'a12_1', 'a12_2', 'a12_3', 'a13_3', 'a13_6', 'a13_7', 'a14']]
 
     return df
+
+
 def pre_process_data_optimised(df):
     # normalize continuous value of attributes
     for column in df:
@@ -133,6 +129,7 @@ def pre_process_data_optimised(df):
              'a12_1', 'a12_2', 'a12_3', 'a13_3', 'a13_6', 'a13_7', 'a14']]
 
     return df
+
 # use k-means to cluster data
 def cluster_by_kmeans(df):
     # get dataframe without target attribute
@@ -154,9 +151,21 @@ def cluster_by_kmeans(df):
     print('Accuracy: %.2f' % (max(count_error, len(facts) - count_error)/len(facts)*100))
     return (max(count_error, len(facts) - count_error)/len(facts)*100)
 
+
 if __name__ == '__main__':
     df = load_file('/Users/hao/PycharmProject/COMP9321-project/data/heart_disease.csv')
     df_processed = pre_process_data(df)
     # df_processed = df
     print_dataframe(df_processed)
 
+    cluster_by_kmeans(df_processed)
+    attribute_influence = {}
+
+    for column in df_processed:
+        if column == 'a14':
+            continue
+        # print('Omit attribute ' + column, end=': ')
+        attribute_influence[column] = cluster_by_kmeans(df_processed.drop([column], axis=1))
+
+    for attribute in sorted(attribute_influence, key=lambda x : attribute_influence[x]):
+        print("%s,%s" % (attribute, attribute_influence[attribute]))
