@@ -7,10 +7,8 @@ from sklearn.cluster import KMeans
 
 
 
-# load file into dataframe and
-# clean invalid data
+
 def load_file(file_name):
-    # load data into dataframe
     titles = ['age', 'sex', 'pain_type','blood_pressure', 'serum_cholestoral',
               'blood_sugar', 'electrocardiographic', 'maximum_heart_rate',
               'exercise', 'oldpeak', 'slope_of_peak_exercise', 'number_of_vessels',
@@ -19,7 +17,6 @@ def load_file(file_name):
 
     df = pd.read_csv(file_name, sep=',', header=None, names=titles_backup)
 
-    # clean invalid rows
     df = df.dropna()
     df = df.astype(str)
     for title in titles_backup:
@@ -30,7 +27,6 @@ def load_file(file_name):
     return df
 
 
-# pre-process data
 def pre_process_data(df):
     # normalize continuous value of attributes
     for column in df:
@@ -130,9 +126,7 @@ def pre_process_data_optimised(df):
 
     return df
 
-# use k-means to cluster data
 def cluster_by_kmeans(df):
-    # get dataframe without target attribute
     df_without_label = df.drop(['a14'], axis=1)
 
     # fit a k-means estimator
@@ -155,7 +149,6 @@ def cluster_by_kmeans(df):
 if __name__ == '__main__':
     df = load_file('/Users/hao/PycharmProject/COMP9321-project/data/heart_disease.csv')
     df_processed = pre_process_data(df)
-    # df_processed = df
     print_dataframe(df_processed)
 
     cluster_by_kmeans(df_processed)
