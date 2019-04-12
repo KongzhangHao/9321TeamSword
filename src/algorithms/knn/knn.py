@@ -5,13 +5,12 @@ from sklearn.utils import shuffle
 
 def predict(test_data, training_data, k):
     training_data['distance'] = 0
-    print("hello")
     temp = (training_data.iloc[:, :-2] - test_data) ** 2
     training_data['distance'] = temp.sum(1) ** 1 / 2
     knn = training_data.sort_values(by='distance')[:k]
-    print("aaa")
     training_data.drop('distance', axis=1, inplace=True)
     return knn.iloc[:, -2].value_counts().index[0]
+
 
 def pre_process_data(df):
     # normalize continuous value of attributes
@@ -58,6 +57,8 @@ def pre_process_data(df):
              'a12_1', 'a12_2', 'a12_3', 'a13_3', 'a13_6', 'a13_7', 'a14']]
 
     return df
+
+
 def pre_process_data_optimised(df):
     # normalize continuous value of attributes
     for column in df:
@@ -109,7 +110,6 @@ def pre_process_data_optimised(df):
              'a12_1', 'a12_2', 'a12_3', 'a13_3', 'a13_6', 'a13_7', 'a14']]
 
     return df
-
 
 def pre_process_data_normalisation(df):
     # normalize continuous value of attributes
