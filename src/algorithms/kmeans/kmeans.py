@@ -28,7 +28,6 @@ def load_file(file_name):
 
 
 def pre_process_data(df):
-    # normalize continuous value of attributes
     for column in df:
         if column == 'a1' or column == 'a4' or column == 'a5' or column == 'a8' or column == 'a10' or column == 'a11':
             diff = max(df[column]) - min(df[column])
@@ -129,11 +128,9 @@ def pre_process_data_optimised(df):
 def cluster_by_kmeans(df):
     df_without_label = df.drop(['a14'], axis=1)
 
-    # fit a k-means estimator
     estimator = KMeans(n_clusters=2)
     estimator.fit(df_without_label)
 
-    # labels are given by labels_ attribute
     labels = estimator.labels_
     facts = np.array(df['a14'])
 
@@ -157,7 +154,6 @@ if __name__ == '__main__':
     for column in df_processed:
         if column == 'a14':
             continue
-        # print('Omit attribute ' + column, end=': ')
         attribute_influence[column] = cluster_by_kmeans(df_processed.drop([column], axis=1))
 
     for attribute in sorted(attribute_influence, key=lambda x : attribute_influence[x]):
