@@ -5,7 +5,7 @@ import numpy as np
 
 
 
-PATH = '/Users/mengmeng/PycharmProjects/COMP9321 Project/data/heart_disease.csv'
+PATH = 'data/heart_disease.csv'
 age_ranges = ['0-45','45-55','55-65','65-*']
 width = 0.35
 ind = np.arange(len(age_ranges))
@@ -391,13 +391,13 @@ def plot_13():
 
     # plt.show()
 
-OriginArray = read_csv(PATH)
-MaleOnlyArray = filterArray(OriginArray,1,0.0)
-FemaleOnlyArray = filterArray(OriginArray,1,1.0)
+if __name__ == '__main__':
+    OriginArray = read_csv(PATH)
+    MaleOnlyArray = filterArray(OriginArray, 1, 0.0)
+    FemaleOnlyArray = filterArray(OriginArray, 1, 1.0)
 
-print_as_table(OriginArray)
+    print_as_table(OriginArray)
 
-for i in range(3, 14):
-
-    eval("plot_%s" % i)()
-    plt.close()
+    for i in range(3, 14):
+        eval("plot_%s" % i)()
+        plt.close()

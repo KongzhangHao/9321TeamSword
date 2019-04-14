@@ -139,25 +139,87 @@ def load_file(file_name):
         df.drop(df.index[df[title] == '?'], inplace=True)
     df = df.astype(float)
 
-    df = shuffle(df)
+    # df = shuffle(df)
     return df
 
 
-if __name__ == '__main__':
+
+def preprocess_input(row, df):
+    # normalize continuous value of attributes
+    for column in row:
+        if column == 'a1' or column == 'a4' or column == 'a5' or column == 'a8' or column == 'a10':
+            diff = max(df[column]) - min(df[column])
+            row[column] = (row[column] - min(df[column])) / diff
+
+    # split discrete value of attributes
+    # attribute 3
+    row['a3_1'] = row['a3'].map(lambda x: x == 1)
+    row['a3_2'] = row['a3'].map(lambda x: x == 2)
+    row['a3_3'] = row['a3'].map(lambda x: x == 3)
+    row['a3_4'] = row['a3'].map(lambda x: x == 4)
+    row = row.drop(['a3'], axis=1)
+
+    # attribute 7
+    row['a7_0'] = row['a7'].map(lambda x: x == 0)
+    row['a7_1'] = row['a7'].map(lambda x: x == 1)
+    row['a7_2'] = row['a7'].map(lambda x: x == 2)
+    row = row.drop(['a7'], axis=1)
+
+    # attribute 11
+    row['a11_1'] = row['a11'].map(lambda x: x == 1)
+    row['a11_2'] = row['a11'].map(lambda x: x == 2)
+    row['a11_3'] = row['a11'].map(lambda x: x == 3)
+    row = row.drop(['a11'], axis=1)
+
+    # attribute 12
+    row['a12_0'] = row['a12'].map(lambda x: x == 0)
+    row['a12_1'] = row['a12'].map(lambda x: x == 1)
+    row['a12_2'] = row['a12'].map(lambda x: x == 2)
+    row['a12_3'] = row['a12'].map(lambda x: x == 3)
+    row = row.drop(['a12'], axis=1)
+
+    # attribute 13
+    row['a13_3'] = row['a13'].map(lambda x: x == 3)
+    row['a13_6'] = row['a13'].map(lambda x: x == 6)
+    row['a13_7'] = row['a13'].map(lambda x: x == 7)
+    row = row.drop(['a13'], axis=1)
+
+    row = row.astype(float)
+
+    # re-arrange attributes columns
+    row = row[['a1', 'a2', 'a3_1', 'a3_2', 'a3_3', 'a3_4', 'a4', 'a5', 'a6',
+             'a7_0', 'a7_1', 'a7_2', 'a8', 'a9', 'a10', 'a11_1', "a11_2", "a11_3", 'a12_0',
+             'a12_1', 'a12_2', 'a12_3', 'a13_3', 'a13_6', 'a13_7']]
+
+    return row
+
+
+def main():
 
     # file_name = './kongzhang_preprocessed.csv'
     # df = pd.read_csv(file_name)
-    df = load_file('/Users/hao/PycharmProject/COMP9321-project/data/heart_disease.csv')
+    df = load_file('heart_disease.csv')
     df = pre_process_data_optimised(df)
     # df = pre_process_data(df)
     # train = pd.DataFrame(df.iloc[:190])
+
+    test = pd.DataFrame(df.iloc[:])
+    result = []
+    k = 3
+    total = 0
+    match = 0
+    for row in test.index:
+        total += 1
+        if predict(test.loc[row][:-1], test, k) == df.loc[row][-1]:
+            match += 1
+    print("kNN accuracy: %.2f" % (match / total * 100) + "%")
+    print("Accuracy of removing different attribute each time")
 
     attribute_influence = {}
 
     for column in df:
         if column == 'a14':
             continue
-        train = df.drop([column], axis=1)
         test = df.drop([column], axis=1)
         total = 0
         match = 0
@@ -172,15 +234,5 @@ if __name__ == '__main__':
         print("%s,%s" % (attribute, attribute_influence[attribute]))
 
 
-    train = pd.DataFrame(df.iloc[:])
-    test = pd.DataFrame(df.iloc[:])
-    result = []
-    for k in range(3, 4):
-        total = 0
-        match = 0
-        for row in test.index:
-            total += 1
-            if predict(test.loc[row][:-1], test, k) == df.loc[row][-1]:
-                match += 1
-        result.append(match / total)
-    print(result)
+if __name__ == '__main__':
+    main()

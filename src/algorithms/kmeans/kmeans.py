@@ -4,11 +4,20 @@ import numpy as np
 from sklearn.utils import shuffle
 from sklearn.cluster import KMeans
 
+# print dataframe
+def print_dataframe(df, print_title=True):
+    print('Number of data:', len(df))
+    if print_title:
+        print(' '.join([column for column in df]))
+
+    for index, row in df.iterrows():
+        print(index, ':', ' '.join([str(row[column]) for column in df]))
 
 
-
-
+# load file into dataframe and
+# clean invalid data
 def load_file(file_name):
+    # load data into dataframe
     titles = ['age', 'sex', 'pain_type','blood_pressure', 'serum_cholestoral',
               'blood_sugar', 'electrocardiographic', 'maximum_heart_rate',
               'exercise', 'oldpeak', 'slope_of_peak_exercise', 'number_of_vessels',
@@ -17,6 +26,7 @@ def load_file(file_name):
 
     df = pd.read_csv(file_name, sep=',', header=None, names=titles_backup)
 
+    # clean invalid rows
     df = df.dropna()
     df = df.astype(str)
     for title in titles_backup:
@@ -27,7 +37,9 @@ def load_file(file_name):
     return df
 
 
+# pre-process data
 def pre_process_data(df):
+    # normalize continuous value of attributes
     for column in df:
         if column == 'a1' or column == 'a4' or column == 'a5' or column == 'a8' or column == 'a10' or column == 'a11':
             diff = max(df[column]) - min(df[column])
@@ -125,12 +137,16 @@ def pre_process_data_optimised(df):
 
     return df
 
+# use k-means to cluster data
 def cluster_by_kmeans(df):
+    # get dataframe without target attribute
     df_without_label = df.drop(['a14'], axis=1)
 
+    # fit a k-means estimator
     estimator = KMeans(n_clusters=2)
     estimator.fit(df_without_label)
 
+    # labels are given by labels_ attribute
     labels = estimator.labels_
     facts = np.array(df['a14'])
 
@@ -139,22 +155,28 @@ def cluster_by_kmeans(df):
         if facts[index] != labels[index]:
             count_error += 1
 
-    print('Accuracy: %.2f' % (max(count_error, len(facts) - count_error)/len(facts)*100))
+    # print('Accuracy: %.2f' % (max(count_error, len(facts) - count_error)/len(facts)*100))
     return (max(count_error, len(facts) - count_error)/len(facts)*100)
 
 
-if __name__ == '__main__':
-    df = load_file('/Users/hao/PycharmProject/COMP9321-project/data/heart_disease.csv')
-    df_processed = pre_process_data(df)
-    print_dataframe(df_processed)
+def main():
+    df = load_file('heart_disease.csv')
+    df_processed = pre_process_data_optimised(df)
+    # print_dataframe(df_processed)
 
-    cluster_by_kmeans(df_processed)
+    accuracy = cluster_by_kmeans(df_processed)
+    print("kMeans accuracy is: %.2f" % accuracy, "%")
     attribute_influence = {}
-
+    print("Accuracy of removing different attribute each time")
     for column in df_processed:
         if column == 'a14':
             continue
+        # print('Omit attribute ' + column, end=': ')
         attribute_influence[column] = cluster_by_kmeans(df_processed.drop([column], axis=1))
 
     for attribute in sorted(attribute_influence, key=lambda x : attribute_influence[x]):
         print("%s,%s" % (attribute, attribute_influence[attribute]))
+
+
+if __name__ == '__main__':
+    main()

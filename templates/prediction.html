@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Heart Disease Data Visualization</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.8.1/css/all.css"
+          integrity="sha384-Bx4pytHkyTDy3aJKjGkGoHPt3tvv6zlwwjc3iqN7ktaiEMLDPqLSZYts2OjKcBx1" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/static/style.css?v=1asdf22aiasalkoisdfdkjnklanvijpjasdfoiasdfowqsf790">
+
+</head>
+<body>
+
+<!-- header navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light" style="font-size: 20px">
+    <a class="navbar-brand" style="color: brown; font-weight: bold" href="#">Team Sword <i class="fal fa-swords"
+                                                                                           style="font-weight: bold"></i></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+            aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav">
+            <li class="nav-item ">
+                <a class="nav-link" href="{{ url_for("visualisation") }}"><i class="far fa-chart-bar"></i> Visualization
+                    <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item ">
+                <a class="nav-link" href="{{ url_for("important_attributes") }}"><i
+                        class="fab fa-creative-commons-by"></i> Important Attributes</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="{{ url_for("prediction") }}"><i class="fas fa-search"></i> Prediction</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for("bonus") }}"><i class="fas fa-lightbulb"></i> Bonus</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+
+<div class="w3-panel w3-card-4 w3-white"
+     style="margin-left: 7%; margin-right: 7%; min-height: 420px; padding: 20px; ">
+    <center><h2 style="margin-bottom: 0; font-weight: bold; color: dimgrey"><i class="fas fa-search"
+                                                                               style="font-size: 40px"></i> Prediction
+    </h2></center>
+    <hr style="border-color: lightgrey; margin-bottom: 5%">
+    <form method="post">
+        <h5 style="margin-left: 10%; color: dimgrey">
+            kNN with Normalise-Continuous and Split-Discrete where k=3 is used for prediction.
+        </h5>
+
+        <div class="input-group mb-3">
+            <div class="input-group-prepend" style="margin-left: 10%">
+                <span class="input-group-text" id="basic-addon1">Attributes</span>
+            </div>
+            <input type="text" class="form-control" placeholder="Attributes Spliced by Comma"
+                   {% if row %}value="{{ row }}"{% endif %} aria-label="Username"
+                   aria-describedby="basic-addon1" name="row">
+            <button type="submit" class="btn-lg btn-outline-success input-group-append" style="margin-right: 10%; ">
+                Predict
+            </button>
+
+        </div>
+    </form>
+
+    {% if error %}
+        <font color="red" style="margin-left: 10%">{{ error }}</font><br>
+
+    {% endif %}
+    <font color="grey" style="margin-left: 10%">example:
+        63.0,1.0,1.0,145.0,233.0,1.0,2.0,150.0,0.0,2.3,3.0,0.0,6.0</font><br>
+    <center>
+        {% if result %}
+            {% if result == "1" %}
+                <h2>Prediction Result: True</h2>
+            {% else %}
+                <h2>Prediction Result: False</h2>
+
+            {% endif %}
+        {% endif %}
+    </center>
+
+</div>
+</body>
+</html>

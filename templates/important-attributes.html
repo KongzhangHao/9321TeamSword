@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Heart Disease Data Visualization</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.8.1/css/all.css"
+          integrity="sha384-Bx4pytHkyTDy3aJKjGkGoHPt3tvv6zlwwjc3iqN7ktaiEMLDPqLSZYts2OjKcBx1" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/static/style.css?v=1asdf22aiasalkoisdfdkjnklanvijpjasdfoiasdfowqsf790">
+
+</head>
+<body>
+
+<!-- header navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light" style="font-size: 20px">
+    <a class="navbar-brand" style="color: brown; font-weight: bold" href="#">Team Sword <i class="fal fa-swords"
+                                                                                           style="font-weight: bold"></i></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+            aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav">
+            <li class="nav-item ">
+                <a class="nav-link" href="{{ url_for("visualisation") }}"><i class="far fa-chart-bar"></i> Visualization
+                    <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="{{ url_for("important_attributes") }}"><i
+                        class="fab fa-creative-commons-by"></i> Important Attributes</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for("prediction") }}"><i class="fas fa-search"></i> Prediction</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for("bonus") }}"><i class="fas fa-lightbulb"></i> Bonus</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+
+<div class="w3-panel w3-card-4 w3-white"
+     style="margin-left: 7%; margin-right: 7%; min-height: 420px; padding: 20px; ">
+    <center><h2 style="margin-bottom: 0; font-weight: bold; color: dimgrey"><i class="fab fa-creative-commons-by"
+                                                                               style="font-size: 40px"></i> Important
+        Attributes</h2></center>
+    <hr style="border-color: lightgrey">
+
+    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist"
+        style="margin-left: 5%; margin-right: 5%; border-radius: 20px; border: 1px solid lightgrey; padding: 1%">
+
+        <li class="nav-item" style="width: 25%">
+            <a class="nav-link active" id="pills-profile-tab" data-toggle="pill" href="#blood_pressure" role="tab"
+               aria-controls="pills-profile" aria-selected="false">
+                <center>k-Means (Accuracy: 82.5%)</center>
+            </a>
+        </li>
+
+        <li class="nav-item" style="width: 25%">
+            <a class="nav-link " id="pills-home-tab" data-toggle="pill" href="#chest_pain" role="tab"
+               aria-controls="pills-home" aria-selected="true">
+                <center>k-NN (Accuracy: 90.9%)</center>
+            </a>
+        </li>
+
+        <li class="nav-item" style="width: 25%">
+            <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#serum_cholestoral" role="tab"
+               aria-controls="pills-contact" aria-selected="false">
+                <center>SVM (Accuracy: 87.5%)</center>
+            </a>
+        </li>
+
+        <li class="nav-item" style="width: 25%">
+            <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#conclusion" role="tab"
+               aria-controls="pills-contact" aria-selected="false">
+                <center>Conclusion</center>
+            </a>
+        </li>
+    </ul>
+    <div class="tab-content" id="pills-tabContent">
+        <div class="tab-pane fade" id="chest_pain" role="tabpanel" aria-labelledby="chest-pain-tab">
+            <table class="table" style="margin-left: 5%; width: 90%">
+                <thead>
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Attribute Name</th>
+                    <th scope="col">Attribute Value</th>
+                    <th scope="col">Accuracy after Removed</th>
+                    <th scope="col">Accuracy Drop</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th scope="row">a9</th>
+                    <td>exercise induced angina</td>
+                    <td>T/F</td>
+                    <td>88.55%</td>
+                    <td> {{ '%0.2f' % (90.9 - 88.55) }}%</td>
+                </tr>
+                <tr>
+                    <th scope="row">a12_0</th>
+                    <td>number of major vessels</td>
+                    <td>0</td>
+                    <td>88.89%</td>
+                    <td> {{ '%0.2f' % (90.9 - 88.89) }}%</td>
+                </tr>
+                <tr>
+                    <th scope="row">a3_4</th>
+                    <td>chest pain type</td>
+                    <td>4</td>
+                    <td>89.56%</td>
+                    <td> {{ '%0.2f' % (90.9 - 89.56) }}%</td>
+                </tr>
+                <tr>
+                    <th scope="row">a7_2</th>
+                    <td>resting electrocardiographic results</td>
+                    <td>2</td>
+                    <td>89.56%</td>
+                    <td> {{ '%0.2f' % (90.9 - 89.56) }}%</td>
+                </tr>
+                <tr>
+                    <th scope="row">a7_0</th>
+                    <td>resting electrocardiographic results</td>
+                    <td>0</td>
+                    <td>89.90%</td>
+                    <td> {{ '%0.2f' % (90.9 - 89.90) }}%</td>
+                </tr>
+                <tr>
+                    <th scope="row">a12_1</th>
+                    <td>number of major vessels</td>
+                    <td>1</td>
+                    <td>89.90%</td>
+                    <td> {{ '%0.2f' % (90.9 - 89.90) }}%</td>
+                </tr>
+                </tbody>
+            </table>
+
+
+        </div>
+        <div class="tab-pane fade  show active" id="blood_pressure" role="tabpanel" aria-labelledby="pills-profile-tab">
+            <table class="table" style="margin-left: 5%; width: 90%">
+                <thead>
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Attribute Name</th>
+                    <th scope="col">Attribute Value</th>
+                    <th scope="col">Accuracy after Removed</th>
+                    <th scope="col">Accuracy Drop</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th scope="row">a13_7</th>
+                    <td>thal(Thalassemia)</td>
+                    <td>7</td>
+                    <td>58.92%</td>
+                    <td> {{ '%0.2f' % (82.5 - 58.92) }}%</td>
+                </tr>
+                <tr>
+                    <th scope="row">a13_3</th>
+                    <td>thal(Thalassemia)</td>
+                    <td>3</td>
+                    <td>58.92%</td>
+                    <td> {{ '%0.2f' % (82.5 - 58.92) }}%</td>
+                </tr>
+                <tr>
+                    <th scope="row">a3_4</th>
+                    <td>chest pain type</td>
+                    <td>4</td>
+                    <td>76.77%</td>
+                    <td> {{ '%0.2f' % (82.5 - 76.77) }}%</td>
+                </tr>
+                <tr>
+                    <th scope="row">a9</th>
+                    <td>exercise induced angina</td>
+                    <td>T/F</td>
+                    <td>76.77%</td>
+                    <td> {{ '%0.2f' % (82.5 - 76.77) }}%</td>
+                </tr>
+                <tr>
+                    <th scope="row">a12_0</th>
+                    <td>number of major vessels</td>
+                    <td>0</td>
+                    <td>76.77%</td>
+                    <td> {{ '%0.2f' % (82.5 - 76.77) }}%</td>
+                </tr>
+                <tr>
+                    <th scope="row">a3_3</th>
+                    <td>chest pain type</td>
+                    <td>3</td>
+                    <td>80.47%</td>
+                    <td> {{ '%0.2f' % (82.5 - 80.47) }}%</td>
+                </tr>
+                </tbody>
+            </table>
+
+
+        </div>
+        <div class="tab-pane fade" id="serum_cholestoral" role="tabpanel" aria-labelledby="pills-contact-tab">
+            <table class="table" style="margin-left: 5%; width: 90%">
+                <thead>
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Attribute Name</th>
+                    <th scope="col">Attribute Value</th>
+                    <th scope="col">Weight</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th scope="row">a8</th>
+                    <td>maximum heart rate achieved</td>
+                    <td>*</td>
+                    <td>2.54</td>
+                </tr>
+                <tr>
+                    <th scope="row">a10</th>
+                    <td>oldpeak</td>
+                    <td>*</td>
+                    <td>1.96</td>
+                </tr>
+                <tr>
+                    <th scope="row">a4</th>
+                    <td>resting blood pressure</td>
+                    <td>4</td>
+                    <td>1.89</td>
+                </tr>
+                <tr>
+                    <th scope="row">a12_0</th>
+                    <td>number of major vessels</td>
+                    <td>0</td>
+                    <td>1.27</td>
+                </tr>
+                <tr>
+                    <th scope="row">a5</th>
+                    <td>serum cholestoral</td>
+                    <td>*</td>
+                    <td>1.22</td>
+                </tr>
+                <tr>
+                    <th scope="row">a2</th>
+                    <td>sex</td>
+                    <td>T/F</td>
+                    <td>1.13</td>
+                </tr>
+                </tbody>
+            </table>
+
+
+        </div>
+        <div class="tab-pane fade" id="conclusion" role="tabpanel" aria-labelledby="pills-profile-tab">
+            <table class="table table-bordered" style="margin-left: 30%; width: 40%">
+                <thead>
+                <tr>
+                    <th scope="col">Important Attributes</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th>thal(Thalassemia)</th>
+                </tr>
+                <tr>
+                    <th scope="row">chest pain type</th>
+                </tr>
+                <tr>
+                    <th scope="row">exercise induced angina</th>
+                </tr>
+                <tr>
+                    <th scope="row">number of major vessels</th>
+                </tr>
+                <tr>
+                    <th scope="row">maximum heart rate achieved</th>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{##}
+{#<!-- visualized images -->#}
+{#<div class="row">#}
+{#    <div class="column">#}
+{#        <img src="/static/figures/3.png">#}
+{#        <img src="/static/figures/4.png">#}
+{#        <img src="/static/figures/5.png">#}
+{#        <img src="/static/figures/6.png">#}
+{#        <img src="/static/figures/7.png">#}
+{#        <img src="/static/figures/8.png">#}
+{#        <img src="/static/figures/9.png">#}
+{#        <img src="/static/figures/10.png">#}
+{#        <img src="/static/figures/11.png">#}
+{#        <img src="/static/figures/12.png">#}
+{#        <img src="/static/figures/13.png">#}
+{#    </div>#}
+{#</div>#}
+
+</body>
+</html>

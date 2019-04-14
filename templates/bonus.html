@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Heart Disease Data Visualization</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.8.1/css/all.css"
+          integrity="sha384-Bx4pytHkyTDy3aJKjGkGoHPt3tvv6zlwwjc3iqN7ktaiEMLDPqLSZYts2OjKcBx1" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/static/style.css?v=1asdf22aiasalkoisdfdkjnklanvijpjasdfoiasdfowqsf790">
+
+</head>
+<body>
+
+<!-- header navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light" style="font-size: 20px">
+    <a class="navbar-brand" style="color: brown; font-weight: bold" href="#">Team Sword <i class="fal fa-swords"
+                                                                                           style="font-weight: bold"></i></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+            aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav">
+            <li class="nav-item ">
+                <a class="nav-link" href="{{ url_for("visualisation") }}"><i class="far fa-chart-bar"></i> Visualization
+                    <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item ">
+                <a class="nav-link" href="{{ url_for("important_attributes") }}"><i
+                        class="fab fa-creative-commons-by"></i> Important Attributes</a>
+            </li>
+            <li class="nav-item ">
+                <a class="nav-link" href="{{ url_for("prediction") }}"><i class="fas fa-search"></i> Prediction</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="{{ url_for("bonus") }}"><i class="fas fa-lightbulb"></i> Bonus</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+
+<div class="w3-panel w3-card-4 w3-white"
+     style="margin-left: 7%; margin-right: 7%; min-height: 420px; padding: 20px; ">
+    <center><h2 style="margin-bottom: 0; font-weight: bold; color: dimgrey"><i class="fas fa-lightbulb"
+                                                                               style="font-size: 40px"></i> Bonus
+    </h2></center>
+    <hr style="border-color: lightgrey;">
+    <h5 style="margin-left: 5%; margin-right: 5%">
+        <center style="margin-bottom: 1%; font-size: 20px"><b>Advance Features</b></center>
+        <b>Normalise Continuous</b>: Attributes with continuous values are normalised. <br>
+        <b>Split Discrete</b>: Attributes with discrete values are splitted as multiple attributes. <br>
+        <b>Median Split</b>: Attribute with continous values are converted to 0 or 1 by comparing to attribute's median value.
+        <br><br>
+        Accuracy analysis is as below.
+    </h5>
+
+    <table class="table" style="margin-left: 5%; width: 90%">
+        <thead>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Algorithm</th>
+            <th scope="col">Normalise Continuous</th>
+            <th scope="col">Split Discrete</th>
+            <th scope="col">Median Split</th>
+            <th scope="col">Accuracy</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th scope="row">1</th>
+            <td>kNN</td>
+            <td>Yes</td>
+            <td>Yes</td>
+            <td>No</td>
+            <td>90.9%</td>
+        </tr>
+        <tr>
+            <th scope="row">2</th>
+            <td>SVM</td>
+            <td>Yes</td>
+            <td>No</td>
+            <td>Yes</td>
+            <td>87.5%</td>
+        </tr>
+        <tr>
+            <th scope="row">3</th>
+            <td>SVM</td>
+            <td>Yes</td>
+            <td>Yes</td>
+            <td>No</td>
+            <td>87.2%</td>
+        </tr>
+        <tr>
+            <th scope="row">4</th>
+            <td>kMeans</td>
+            <td>Yes</td>
+            <td>Yes</td>
+            <td>No</td>
+
+            <td>82.5%</td>
+        </tr>
+        <tr>
+            <th scope="row">5</th>
+            <td>kMeans</td>
+            <td>Yes</td>
+            <td>No</td>
+            <td>No</td>
+
+            <td>79.8%</td>
+        </tr>
+        <tr>
+            <th scope="row">6</th>
+            <td>kMeans</td>
+            <td>No</td>
+            <td>No</td>
+            <td>No</td>
+
+            <td>72.7%</td>
+        </tr>
+        <tr>
+            <th scope="row">7</th>
+            <td>kNN</td>
+            <td>Yes</td>
+            <td>No</td>
+            <td>No</td>
+
+            <td>67.0%</td>
+        </tr>
+        <tr>
+            <th scope="row">8</th>
+            <td>kNN</td>
+            <td>No</td>
+            <td>No</td>
+            <td>No</td>
+
+            <td>55.6%</td>
+        </tr>
+
+
+        </tbody>
+    </table>
+</body>
+</html>
